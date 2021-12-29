@@ -13,6 +13,11 @@ const routes = [{
     // 动态路由，只有访问时才会加载
     component: () => import(/* webpackChunkName: "cartList" */ '../views/cartList/CartList')
   }, {
+    path: '/orderConfirmation/:id',
+    name: 'OrderConfirmation',
+    // 动态路由，只有访问时才会加载
+    component: () => import(/* webpackChunkName: "orderConfirmation" */ '../views/orderConfirmation/orderConfirmation')
+  }, {
     path: '/shop/:id',
     name: 'Shop',
     // 动态路由，只有访问时才会加载
