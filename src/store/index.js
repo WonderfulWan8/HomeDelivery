@@ -9,6 +9,14 @@ const setLocalCartList = ( state ) => {
 
 const getLocalCartList = () => {
   // { shopId: { shopName:'', productList:{ productId:{}}}}
+  // {
+  //   shopId:{
+  //     shopName:'',
+  //     productList:{
+  //       productId:{}}
+  //   }
+  // }
+  // "_id": "2","name": "车厘子 500g / 份","imgUrl": "http://www.dell-lee.com/imgs/vue3/cherry.png","sales": 10,"price": 99.6,"oldPrice": 119.6
   return JSON.parse(localStorage.cartList) || {}
 }
 
