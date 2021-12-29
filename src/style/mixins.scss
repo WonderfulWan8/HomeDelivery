@@ -1,0 +1,6 @@
+//单行多于内容省略号
+@mixin  ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
