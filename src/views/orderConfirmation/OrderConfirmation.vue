@@ -16,20 +16,22 @@
             </div>
         </div>
         <div class="products">
+            
             <div class="products__title">
                 <div class="products__list">
+                    
                     <div
-                    class="product__item"
+                    class="products__item"
                     v-for="item in productList"
                     :key="item._id"
                     >
+                    
                         <img :src="item.imgUrl" class="product__item__img" alt="">
                         <div class="product__item__detail">
-                            <h4 class="product__item__title">商品名称</h4>
+                            <h4 class="product__item__title">{{item.name}}</h4>
                             <p class="product__item__price">
-                                <span class="product__item__yen">&yen;33.3</span>
-                                <span class="product__item__yen"> *3 </span>
-                                <span class="product__item__yen">&yen;99.3</span>
+                                <span class="product__item__yen">&yen;{{item.price}} * {{item.count}}</span>
+                                <span class="product__item__yen">&yen;{{item.price * item.count}}</span>
                             </p>
                         </div>
                     </div>
@@ -44,11 +46,12 @@ import { useRoute } from 'vue-router';
 import { useCommomCartEffect } from '../../effects/cartEffects';
 export default{
     name: "OrderConfirmation",
-    setUp(){
+    setup(){
+        console.log(123);
         const route = useRoute();
         const shopId = route.params.id;
-        const { productList } = useCommomCartEffect(shopId)
-        return { productList }
+        const { productList } = useCommomCartEffect(shopId);
+        return { productList, }
     }
 }
 </script>
