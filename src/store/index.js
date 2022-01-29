@@ -9,7 +9,7 @@ const setLocalCartList = ( state ) => {
 
 const getLocalCartList = () => {
   // { shopId: { shopName:'', productList:{ productId:{}}}}
-  return JSON.parse(localStorage.cartList) || {}
+  return localStorage.cartList === undefined ? {} : JSON.parse(localStorage.cartList);
 }
 
 export default createStore({

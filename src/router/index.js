@@ -8,8 +8,13 @@ const routes = [{
     // 动态路由，只有访问时才会加载
     component: () => import(/* webpackChunkName: "home" */ '../views/home/Home')
   }, {
-    path: '/cartList',
-    name: 'CartList',
+    path: '/cart',
+    name: 'Cart',
+    // 动态路由，只有访问时才会加载
+    component: () => import(/* webpackChunkName: "home" */ '../views/shop/Cart')
+  },{
+    path: '/cartList',//实际加载的路径
+    name: 'CartList',//访问的路由节点
     // 动态路由，只有访问时才会加载
     component: () => import(/* webpackChunkName: "cartList" */ '../views/cartList/CartList')
   }, {
