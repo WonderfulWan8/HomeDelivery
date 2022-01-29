@@ -11,7 +11,12 @@ const routes = [{
     path: '/cart',
     name: 'Cart',
     // 动态路由，只有访问时才会加载
-    component: () => import(/* webpackChunkName: "home" */ '../views/shop/Cart')
+    component: () => import(/* webpackChunkName: "cart" */ '../views/shop/Cart')
+  },{
+    path: '/orderConfirmation/:id',
+    name: 'OrderConfirmation',
+    // 动态路由，只有访问时才会加载
+    component: () => import(/* webpackChunkName: "orderConfirmation" */ '../views/orderConfirmation/OrderConfirmation')
   },{
     path: '/cartList',//实际加载的路径
     name: 'CartList',//访问的路由节点
