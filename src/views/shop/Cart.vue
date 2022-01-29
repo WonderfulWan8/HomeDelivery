@@ -81,12 +81,13 @@
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import { useCommomCartEffect } from './commonCartEffect'
+// import { useCommomCartEffect } from './commonCartEffect'
+import { useCommomCartEffect } from '../../effects/cartEffects'
 
 // 获取购物车信息逻辑
 const useCartEffect = (shopId) => {
     const store = useStore()
-    const { cartList, changeCartItemInfo } = useCommomCartEffect()     
+    const { cartList, productList, changeCartItemInfo } = useCommomCartEffect(shopId)     
     
     // 计算总数
     const caculations = computed (() => {
@@ -108,11 +109,6 @@ const useCartEffect = (shopId) => {
         return result 
     })
     
-    const productList = computed(()=>{
-        const productList = cartList[shopId]?.productList || []
-        return productList
-    })
-
     //改变商品选中状态
     const changeCartItemChecked = (shopId, productId)=>{
         store.commit('changeCartItemChecked',{ shopId, productId })
