@@ -2,7 +2,9 @@
     <div class="wrapper">
         <div class="top"> 
             <div class="top__header">
-                <div class="iconfont top__header__back">&#xe679;</div>
+                <div 
+                class="iconfont top__header__back"
+                 @click="handleBackClick()">&#xe679;</div>
                 确认订单
             </div>
             <div class="top__receiver">
@@ -12,7 +14,12 @@
                     <span class="top__receiver__info__name">瑶妹（先生）</span>
                     <span class="top__receiver__info__phoneNum">18911024266</span>
                 </div>
-                <div class="iconfont top__receiver__icon">&#xe679;</div>
+                <div
+                class="iconfont top__receiver__icon"
+               
+                >
+                &#xe679;
+                </div>
             </div>
         </div>
         <div class="products">
@@ -21,26 +28,27 @@
             </div> 
             <div class="products__list">
                 
-                <div
-                class="products__item"
-                v-for="item in productList"
-                :key="item._id"
+                <template
+                    v-for="item in productList"
+                    :key="item._id"
                 >
-                    <img :src="item.imgUrl" class="products__item__img" alt="">
-                    <div class="products__item__detail">
-                        <h4 class="products__item__title">{{item.name}}</h4>
-                        <p class="products__item__price">
-                            <span class="products__item__single">
-                                <span class="products__item__yen">&yen;</span> 
-                                {{item.price}} × {{item.count}}
-                            </span>
-                            <span class="products__item__total">
-                                <span class="products__item__yen">&yen;</span> 
-                                {{(item.price * item.count).toFixed(2)}}
-                            </span>
-                        </p>
+                    <div class="products__item" v-if="item.count > 0">
+                        <img :src="item.imgUrl" class="products__item__img" alt="">
+                        <div class="products__item__detail">
+                            <h4 class="products__item__title">{{item.name}}</h4>
+                            <p class="products__item__price">
+                                <span class="products__item__single">
+                                    <span class="products__item__yen">&yen;</span> 
+                                    {{item.price}} × {{item.count}}
+                                </span>
+                                <span class="products__item__total">
+                                    <span class="products__item__yen">&yen;</span> 
+                                    {{(item.price * item.count).toFixed(2)}}
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </template>
             </div>    
         </div>
         <div class="order">
@@ -51,16 +59,17 @@
 </template>
 
 <script>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useCommomCartEffect } from '../../effects/cartEffects';
 export default{
     name: "OrderConfirmation",
     setup(){
-        console.log(123);
         const route = useRoute();
+        const router = useRouter();
         const shopId = route.params.id;
         const { productList, shopName, caculations } = useCommomCartEffect(shopId);
-        return { productList, shopName, caculations }
+        const handleBackClick = ()=>{ router.back(); };
+        return { productList, shopName, caculations, handleBackClick }
     }
 }
 </script>
@@ -74,6 +83,7 @@ export default{
         right: 0;
         bottom: 0;
         background-color: #eee;
+        overflow-y: scroll;
     }
     .top{
         position: relative;
@@ -176,7 +186,7 @@ export default{
                     
                 }
                 &__single{
-                    width: 170px;
+                    width: 160px;
                 }
                 &__total{
                     color: #333;
@@ -186,11 +196,12 @@ export default{
                     font-size: .12rem;
                 }
         }
-        &product{
-             
-        }
     }
     .order{
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
         display: flex;
         height: .49rem;
         line-height: .49rem;
