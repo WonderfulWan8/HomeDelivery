@@ -16,27 +16,36 @@
             </div>
         </div>
         <div class="products">
-            
             <div class="products__title">
-                <div class="products__list">
-                    
-                    <div
-                    class="products__item"
-                    v-for="item in productList"
-                    :key="item._id"
-                    >
-                    
-                        <img :src="item.imgUrl" class="product__item__img" alt="">
-                        <div class="product__item__detail">
-                            <h4 class="product__item__title">{{item.name}}</h4>
-                            <p class="product__item__price">
-                                <span class="product__item__yen">&yen;{{item.price}} * {{item.count}}</span>
-                                <span class="product__item__yen">&yen;{{item.price * item.count}}</span>
-                            </p>
-                        </div>
+                {{shopName}}
+            </div> 
+            <div class="products__list">
+                
+                <div
+                class="products__item"
+                v-for="item in productList"
+                :key="item._id"
+                >
+                    <img :src="item.imgUrl" class="products__item__img" alt="">
+                    <div class="products__item__detail">
+                        <h4 class="products__item__title">{{item.name}}</h4>
+                        <p class="products__item__price">
+                            <span class="products__item__single">
+                                <span class="products__item__yen">&yen;</span> 
+                                {{item.price}} × {{item.count}}
+                            </span>
+                            <span class="products__item__total">
+                                <span class="products__item__yen">&yen;</span> 
+                                {{(item.price * item.count).toFixed(2)}}
+                            </span>
+                        </p>
                     </div>
-                </div>    
-            </div>
+                </div>
+            </div>    
+        </div>
+        <div class="order">
+            <div class="order__price">实付金额 <b>¥{{caculations.price}}</b></div>
+            <div class="order__btn">提交订单</div>
         </div>
     </div>    
 </template>
@@ -50,8 +59,8 @@ export default{
         console.log(123);
         const route = useRoute();
         const shopId = route.params.id;
-        const { productList } = useCommomCartEffect(shopId);
-        return { productList, }
+        const { productList, shopName, caculations } = useCommomCartEffect(shopId);
+        return { productList, shopName, caculations }
     }
 }
 </script>
@@ -127,15 +136,15 @@ export default{
         margin:.16rem .18rem .55rem .18rem;//.55rem给底部实付金额留出位置
         background-color: #fff;
         &__title{
-           
-        }
-        &__list{
-               
+           padding: 16px 0 0 16px;
+           font-size: 16px;
+           color: #333;
+           line-height: 22px;
+           font-weight: bold;
         }
         &__item{
             overflow-y: scroll;//y轴滚动
             flex: 1;
-            &__item{
                 position: relative;
                 display: flex;
                 padding: .12rem 0;//下面有边框，用padding会有问题
@@ -145,8 +154,8 @@ export default{
                     overflow:hidden;
                 }
                 &__img{
-                    width: 0.68rem;
-                    height: 0.68rem;
+                    width: 0.46rem;
+                    height: 0.46rem;
                     margin-right: .16rem;
                 }
                 &__title{
@@ -154,24 +163,51 @@ export default{
                     font-size: .14rem;
                     color: $content-fontcolor;
                     margin: 0;
+                    margin-bottom: 6px;
                     @include ellipsis
+                    
                 }
                 &__price{
-                    margin: 0;
+                    display: flex;
+                    margin: 0;//重置p标签的margin
                     line-height: .2rem;
                     font-size: .14rem;
                     color: $highlight-fontColor;
+                    
+                }
+                &__single{
+                    width: 170px;
+                }
+                &__total{
+                    color: #333;
+                    font-weight: bold;
                 }
                 &__yen{
                     font-size: .12rem;
                 }
-            }
         }
         &product{
              
         }
     }
-    .product{
-   
+    .order{
+        display: flex;
+        height: .49rem;
+        line-height: .49rem;
+        background-color: #fff;
+        &__price{
+            flex: 1;
+            color: #333;
+            font-size: .14rem;
+            // font-weight: bold;
+            margin-left: 24px;
+        }
+        &__btn{
+            color: white;
+            background-color: #4FB0F9;
+            width: .98rem;
+            font-size: .14rem;
+            text-align: center;
+        }
     }
 </style>

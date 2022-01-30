@@ -78,7 +78,7 @@
     
 </template>
 <script>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 // import { useCommomCartEffect } from './commonCartEffect'
@@ -87,27 +87,7 @@ import { useCommomCartEffect } from '../../effects/cartEffects'
 // 获取购物车信息逻辑
 const useCartEffect = (shopId) => {
     const store = useStore()
-    const { cartList, productList, changeCartItemInfo } = useCommomCartEffect(shopId)     
-    
-    // 计算总数
-    const caculations = computed (() => {
-        const productList = cartList[shopId]?.productList//读取当前商铺下的商品列表（vuex）
-        const result = { total: 0, price: 0, allChecked: true}// 计算购物车内商品总数, 总价, 是否全选
-        if(productList){
-            for(let i in productList){//读取每个商品的count
-                const product = productList[i]
-                result.total += product.count
-                if(product.check){  // 勾选上的才计算价钱
-                    result.price += ( product.count * product.price )
-                }
-                if(product.count > 0 && !product.check){
-                    result.allChecked = false;
-                }
-            }
-        }
-        result.price = result.price.toFixed(2);
-        return result 
-    })
+    const { productList, changeCartItemInfo, caculations } = useCommomCartEffect(shopId)     
     
     //改变商品选中状态
     const changeCartItemChecked = (shopId, productId)=>{
