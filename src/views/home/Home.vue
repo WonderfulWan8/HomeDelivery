@@ -14,7 +14,7 @@
 // import StaticPartcopy from './StaticPartcopy'
 import StaticPart from './StaticPart'
 import Nearby from './Nearby'
-import Docker from './Docker'
+import Docker from '../../components/Docker'
 export default {
   name: 'Home',
   components: { Nearby, Docker, StaticPart }
