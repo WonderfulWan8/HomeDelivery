@@ -10,8 +10,15 @@ export const useCommomCartEffect = (shopId) =>{
         })
     };
     const productList = computed(()=>{
-        const productList = cartList[shopId]?.productList || []
-        return productList
+        const productList = cartList[shopId]?.productList || {}
+        const notEmptyProductList = {}
+        for( let i in productList ){
+            const product = productList[i];
+            if(product.count > 0){
+                notEmptyProductList[i] = product;
+            }
+        }
+        return notEmptyProductList
     });
     const shopName = computed( ()=>{
         // 如果此处仅做取值而不使用计算属性，会导致如果shopId变化时，获取不到shopName
