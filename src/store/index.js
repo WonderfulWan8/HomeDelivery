@@ -10,6 +10,11 @@ const setLocalCartList = ( state ) => {
 const getLocalCartList = () => {
   // { shopId: { shopName:'', productList:{ productId:{}}}}
   return localStorage.cartList === undefined ? {} : JSON.parse(localStorage.cartList);
+  try{
+
+  }catch(e){
+    
+  }
 }
 
 export default createStore({
@@ -66,6 +71,9 @@ export default createStore({
         }
       }
       setLocalCartList(state)
+    },
+    clearCarData(state, shopId){
+      state.cartList[shopId].productList = {}; 
     }
   },
   actions: {

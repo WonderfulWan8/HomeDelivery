@@ -10,32 +10,60 @@
             <div class="mask__content__btns">
                 <div
                 class="mask__content__btn mask__content__btn--first"
-                @click="handleCancleOrder">取消订单</div>
+                @click="() => handleConfirmOrder(true)">取消订单</div>
                 <div
                 class="mask__content__btn mask__content__btn--last"
-                @click="handleConfirmOrder">确认支付</div>
+                @click="() => handleConfirmOrder(false)">确认支付</div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import { useCommomCartEffect } from '../../effects/cartEffects';
+import { post } from '../../utils/request';
 export default {
     name:'Order',
 
     setup(){
         const route = useRoute();
-        const shopId = route.params.id;
-        const { caculations } = useCommomCartEffect(shopId);
-        const handleCancleOrder = () => {
-            alert("cancle");
+        const router = useRouter();
+        const store = useStore();
+
+        const shopId = parseInt(route.params.id, 10);
+        const { caculations, shopName, productList } = useCommomCartEffect(shopId);
+
+        const handleConfirmOrder = async (isCanceled) => {
+            // alert("confirm");
+            let products = [];
+            for(let i in productList.value){
+                let product = productList.value[i]
+                products.push({
+                    id: product._id,
+                    num: product.count
+                });
+            }   
+            console.log(products);
+            try{
+                const result = await post('/api/order',{
+                    addressId : 1,
+                    shopId,
+                    shopName: shopName.value,
+                    isCanceled,
+                    products,
+                });
+                if( result?.errno === 0 ){
+                    store.commit('clearCarData', shopId );
+                    router.push( { name: 'Home' } );
+                }
+                // console.log(result);
+            }catch(e){
+                // 提示下单失败
+            }
         }
-        const handleConfirmOrder = () => {
-            alert("confirm");
-        }
-        return { caculations, handleCancleOrder, handleConfirmOrder }
+        return { caculations, handleConfirmOrder }
 
     }
 }

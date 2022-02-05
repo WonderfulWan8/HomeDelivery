@@ -38,7 +38,5 @@ export const useCommomCartEffect = (shopId) =>{
         result.price = result.price.toFixed(2);
         return result 
     })
-    
-
     return { cartList, productList, shopName, changeCartItemInfo, caculations }
 }
