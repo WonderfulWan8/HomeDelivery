@@ -4,7 +4,7 @@
     <!-- BEM命名规则，block__element--Modifier块__元素--状态 下面是判断，只有第一个才有蓝色 -->
     <div
      v-for="(item,index) in dockerList"
-     :class="{' docker__item':true,' docker__item--active':index===0}"
+     :class="{' docker__item':true,' docker__item--active': index === currentIndex}"
      :key="item.icon"
      >
       <router-link :to="item.to">
@@ -18,6 +18,7 @@
 <script>
 export default {
   name: 'Docker',
+  props: ['currentIndex'],
   setup () {
     const dockerList = [
       { icon: '&#xe6b8;', text: '首页', to: {name: 'Home'} },
