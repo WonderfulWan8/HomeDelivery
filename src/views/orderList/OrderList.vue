@@ -4,21 +4,33 @@
             我的订单
         </div>
         <div class="orders">
-            <div class="order">
+            <div
+                class="order"
+                v-for="(item, index) in list"
+                :key="index"
+            >
                 <div class="order__title">
-                    沃尔玛
-                    <span class="order__status">已取消</span>
+                    {{item.shopName}}
+                    <span class="order__status">
+                        {{ item.isCanceled ? '已取消' : '已下单' }}
+                    </span>
                 </div>
                 <div class="order__content">
                     <div class="order__content__imgs">
-                        <img class="order__content__img" src="http://www.dell-lee.com/imgs/vue3/tomato.png">
-                        <img class="order__content__img" src="http://www.dell-lee.com/imgs/vue3/tomato.png">
-                        <img class="order__content__img" src="http://www.dell-lee.com/imgs/vue3/tomato.png">
-                        <img class="order__content__img" src="http://www.dell-lee.com/imgs/vue3/tomato.png">
+                        <template
+                            v-for="(innerItem, innerIndex) in item.products"
+                            :key="innerIndex"
+                        >
+                            <img
+                            class="order__content__img" 
+                            :src="innerItem.product.img"
+                            v-show="innerIndex <= 3"
+                            >
+                        </template>
                     </div>
                     <div class="order__content__info">
-                        <div class="order__content__price">￥36.88</div>
-                        <div class="order__content__count">共2件</div>
+                        <div class="order__content__price">￥{{item.total}}</div>
+                        <div class="order__content__count">共{{ item.totalNumber }}件</div>
                     </div>
                 </div>
             </div>
@@ -29,10 +41,47 @@
 </template>
 
 <script>
-import Docker from '../../components/Docker'
+import { reactive, toRefs } from 'vue';
+import { get } from '../../utils/request'
+import Docker from '../../components/Docker';
+// 处理订单列表逻辑
+const useOrderListEffect = () => {
+    const data = reactive( { list:[] } )
+    const getNearbyList = async () => {
+        const result = await get('/api/order')
+        if (result?.errno === 0 && result?.data?.length) {
+
+            const orderList = result.data;
+            // 计算总价逻辑
+            orderList.forEach( (order) => {
+                const products = order.products || [] ;
+                let totalPrice = 0;
+                let totalNumber = 0;
+                products.forEach( (productItem)=>{
+                    totalNumber += ( productItem?.orderSales || 0 );
+                    totalPrice += ( (productItem?.product?.price * productItem?.orderSales) || 0 );
+                });
+                order.total = totalPrice;
+                order.totalNumber = totalNumber;
+            });
+            data.list = result.data;
+        }
+  }
+  
+  getNearbyList();
+  const { list } = toRefs(data);
+  return { list }
+}
+
+
 export default{
     name: 'OrderList',
-    components:{ Docker }
+    components:{ Docker },
+    setup(){
+        const { list } = useOrderListEffect();
+        console.log(list, "---------------------list");
+        return{ list }
+    }
 }
 
 </script>
@@ -52,7 +101,7 @@ export default{
 .title{
     line-height: .44rem;
     font-size: .16rem;
-    color: #333;
+    color: content-fontcolor;
     background: rgb(248, 248, 248);
     text-align: center;
 }
@@ -66,7 +115,7 @@ export default{
     &__title{
         margin-bottom: .16rem;
         font-size: .16rem;
-        color:#333;
+        color:content-fontcolor;
         line-height: .22rem;
     }
     &__status{
@@ -91,13 +140,13 @@ export default{
             margin-bottom: .04rem;
             line-height: .2rem;
             font-size: .14rem;
-            color: #E93B3B;
+            color: red;
             text-align: right;
         }
         &__count{
             line-height: .14rem;
             text-align: right;
-            color: #333;
+            color: content-fontcolor;
         }
     }
 }

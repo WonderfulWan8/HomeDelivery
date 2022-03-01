@@ -45,7 +45,7 @@ export default {
     background-repeat: no-repeat;
     position: relative;
     &__header{
-        padding-top:.26rem;
+        padding-top:.2rem;
         line-height: .22rem;
         font-size: .16rem;
         color: white;
