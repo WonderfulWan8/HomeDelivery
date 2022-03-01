@@ -135,7 +135,7 @@ export default {
             margin-top: .24rem;
             line-height: .26rem;
             font-size: .18rem;
-            color:#333;
+            color:content-fontcolor;
         }
         &__desc{
             color: #666;
